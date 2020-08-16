@@ -1,0 +1,32 @@
+{
+  "name": "business-exception-nestjs",
+  "version": "0.0.1",
+  "description": "Business exception with interceptor to help log and handle error messages on NestJs",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devMontagnini/business-exception-nestjs.git"
+  },
+  "keywords": [
+    "nestjs",
+    "interceptor",
+    "exception"
+  ],
+  "author": "André Montagnini",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "^7.4.2",
+    "rxjs": "^6.6.2"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  }
+}
