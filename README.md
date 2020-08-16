@@ -1,2 +1,2 @@
-# exception-interceptor-nestjs
-Interceptor to help log and handle exception messages on NestJs
+# business-exception-nestjs
+Business exception with interceptor to help log and handle error messages on NestJs
