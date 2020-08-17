@@ -1,8 +1,8 @@
 import { Module, DynamicModule } from "@nestjs/common";
-import { BusinessExceptionInterceptor } from "./business-exception.interceptor";
+import { BusinessExceptionInterceptor } from "./interceptors/business-exception.interceptor";
 import { BUSINESS_EXCEPTION_INTERCEPTOR_TOKEN } from "./constants";
-import { BusinessExceptionConfig } from "./business-exception.config";
-import { BusinessExceptionConfigAsync } from "./business-exception.config.async";
+import { BusinessExceptionConfig } from "./interfaces/business-exception.config";
+import { BusinessExceptionConfigAsync } from "./interfaces/business-exception.config.async";
 import { BusinessExceptionHostModule } from "./business-exception-host.module";
 
 @Module({

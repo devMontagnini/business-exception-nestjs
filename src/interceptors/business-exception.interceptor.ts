@@ -3,14 +3,15 @@ import {
   CallHandler, 
   Injectable, 
   ExecutionContext, 
-  Inject 
+  Inject, 
+  BadRequestException
 } from "@nestjs/common";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { BusinessException } from "./business-exception";
-import { BUSINESS_EXCEPTION_CONFIG_TOKEN } from "./constants";
-import { BusinessExceptionConfig } from "./business-exception.config";
-import { ExceptionInfo } from "./exception-info";
+import { BusinessException } from "../dtos/business-exception";
+import { BUSINESS_EXCEPTION_CONFIG_TOKEN } from "../constants";
+import { BusinessExceptionConfig } from "../interfaces/business-exception.config";
+import { ExceptionInfo } from "../interfaces/exception.info";
 
 @Injectable()
 export class BusinessExceptionInterceptor implements NestInterceptor {
@@ -20,21 +21,19 @@ export class BusinessExceptionInterceptor implements NestInterceptor {
     private readonly config: BusinessExceptionConfig,
   ) { }
 
-  responseException(error: Error): Error {
-    const isBusinessException = error instanceof BusinessException;
-    if (isBusinessException && this.config.responseOnBusinessException) {
-      return this.config.responseOnBusinessException(
-        error as BusinessException
-      );
+  responseException(exception: Error): Error {
+    if (exception instanceof BusinessException && this.config.responseOnBusinessException) {
+      const responseBody = this.config.responseOnBusinessException(exception);
+      return new BadRequestException(responseBody);
     }
-    return error;
+    return exception;
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next
       .handle()
       .pipe(catchError((exception: any) => {
-        if(this.config.logOnAnyException || this.config.logOnBusinessException) {
+        if(this.config?.logOnAnyException || this.config?.logOnBusinessException) {
           const request = context.switchToHttp().getRequest();
           const exceptionContent: ExceptionInfo<any> = {
             exception,
@@ -45,10 +44,12 @@ export class BusinessExceptionInterceptor implements NestInterceptor {
               body: request.body
             }
           };
-          this.config?.logOnAnyException(exceptionContent);
-          this.config?.logOnBusinessException(
-            exceptionContent as ExceptionInfo<BusinessException>
-          );
+          if(this.config.logOnAnyException) {
+            this.config?.logOnAnyException(exceptionContent);
+          }
+          if(exception instanceof BusinessException && this.config.logOnBusinessException) {
+            this.config?.logOnBusinessException(exceptionContent);
+          }
         }
         return throwError(this.responseException(exception));
       }));
