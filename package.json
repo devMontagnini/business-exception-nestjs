@@ -1,6 +1,6 @@
 {
   "name": "business-exception-nestjs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Business exception with interceptor to help log and handle error messages on NestJs",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
