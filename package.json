@@ -25,8 +25,12 @@
   "author": "André Montagnini",
   "license": "ISC",
   "dependencies": {
-    "@nestjs/common": "^7.4.2",
-    "rxjs": "^6.6.2"
+    "@nestjs/common": "7.x",
+    "rxjs": "6.x"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "7.x",
+    "rxjs": "6.x"
   },
   "devDependencies": {
     "typescript": "^3.9.7"
